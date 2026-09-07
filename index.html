@@ -3,123 +3,172 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Nicholas Laskoski - COP4813</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #eaf4ff;
-            color: #222;
-        }
+    <meta name="description"
+          content="Nicholas Laskoski's COP4813 personal web development portfolio featuring class assignments, web programming projects, and professional information.">
 
-        header {
-            background-color: #1f5f99;
-            color: white;
-            text-align: center;
-            padding: 30px;
-        }
+    <meta name="author"
+          content="Nicholas Laskoski">
 
-        nav {
-            background-color: #163f63;
-            padding: 12px;
-            text-align: center;
-        }
+    <title>Nicholas Laskoski | COP4813 Portfolio</title>
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        main {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 25px;
-            background-color: white;
-            border-radius: 10px;
-        }
-
-        h2 {
-            color: #1f5f99;
-        }
-
-        img {
-            max-width: 500px;
-            width: 100%;
-            display: block;
-            margin: 20px auto;
-            border-radius: 8px;
-        }
-
-        footer {
-            background-color: #163f63;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin-top: 30px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
     <header>
-        <h1>Welcome to My COP4813 Web Page</h1>
-        <p>Web Systems I</p>
+        <h1>Nicholas Laskoski</h1>
+        <p>COP4813 Web Programming Portfolio</p>
     </header>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About Me</a>
+    <nav aria-label="Main navigation">
+        <ul>
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+
+            <li>
+                <a href="about.html">About Me</a>
+            </li>
+
+            <li>
+                <a href="assignments.html">My Assignments</a>
+            </li>
+
+            <li>
+                <a href="https://validator.w3.org/"
+                   target="_blank"
+                   rel="noopener">
+                    W3C Validator
+                </a>
+            </li>
+        </ul>
     </nav>
 
     <main>
 
-        <h2>About This Website</h2>
+        <section>
+            <h2>Welcome to My Portfolio</h2>
 
-        <p>
-            This website was created as part of my COP4813 course.
-            The purpose of this website is to practice HTML5, CSS,
-            Git, GitHub, and web publishing using GitHub Pages.
-        </p>
+            <p>
+                Welcome to my personal website for COP4813.
+                This site will be used throughout the semester to
+                demonstrate the web programming skills and technologies
+                I learn in this course.
+            </p>
 
-        <h2>Learning Web Development</h2>
+            <p>
+                As I complete new assignments and projects, I will add
+                them to this website so that this portfolio demonstrates
+                my progress as a web developer.
+            </p>
+        </section>
 
-        <p>
-            Throughout this course, I will use this website to demonstrate
-            the web development concepts and technologies that I learn.
-        </p>
+        <section>
+            <h2>About Me</h2>
 
-        <h2>My Computer Setup</h2>
+            <div class="about-container">
 
-        <p>
-            Below is an image included as part of my first COP4813 website.
-        </p>
+                <img
+                    src="images/computer.jpg"
+                    alt="Computer workstation representing web development and technology"
+                >
 
-        <img
-            src="images/computer.jpg"
-            alt="Computer used for web development"
-        >
+                <div>
+                    <p>
+                        My name is Nicholas Laskoski. I am interested in
+                        information technology, cybersecurity, and web
+                        development.
+                    </p>
 
-        <p>
-            Visit my
-            <a href="about.html">About Me page</a>
-            to learn more.
-        </p>
+                    <p>
+                        This portfolio provides examples of my work in
+                        COP4813 and demonstrates my experience using
+                        technologies such as HTML, CSS, Git, GitHub,
+                        and GitHub Pages.
+                    </p>
+
+                    <a class="button" href="about.html">
+                        Learn More About Me
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2>My Assignments</h2>
+
+            <p>
+                The following assignments demonstrate the work I have
+                completed throughout COP4813.
+            </p>
+
+            <div class="assignment-card">
+                <h3>Assignment 1</h3>
+
+                <p>
+                    My first COP4813 website created using HTML5 and
+                    published using GitHub Pages.
+                </p>
+            </div>
+
+            <div class="assignment-card">
+                <h3>Assignment 2</h3>
+
+                <p>
+                    Personal portfolio website demonstrating HTML,
+                    CSS, navigation, accessibility, and responsive
+                    web design.
+                </p>
+            </div>
+
+        </section>
+
+        <section>
+            <h2>Web Development Resources</h2>
+
+            <p>
+                These resources are useful for learning and validating
+                web development projects.
+            </p>
+
+            <ul class="resource-list">
+                <li>
+                    <a href="https://developer.mozilla.org/"
+                       target="_blank"
+                       rel="noopener">
+                        MDN Web Docs
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://validator.w3.org/"
+                       target="_blank"
+                       rel="noopener">
+                        W3C HTML Validator
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://www.webaccessibility.com/"
+                       target="_blank"
+                       rel="noopener">
+                        Web Accessibility Checker
+                    </a>
+                </li>
+            </ul>
+        </section>
 
     </main>
 
     <footer>
         <p>Created by Nicholas Laskoski</p>
-        <p>COP4813</p>
+        <p>COP4813 Web Programming</p>
     </footer>
 
 </body>
