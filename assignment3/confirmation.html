@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Confirmation page for COP4813 Assignment 3 created by Nicholas Laskoski.">
+
+    <meta name="author"
+          content="Nicholas Laskoski">
+
+    <title>Confirm Information | Assignment 3</title>
+
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Assignment 3</h1>
+        <p>Confirm Your Information</p>
+    </header>
+
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About Me</a></li>
+            <li><a href="../assignments.html">My Assignments</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section class="form-section">
+
+            <h2>Please Review Your Information</h2>
+
+            <p>
+                Review the information below and make sure everything
+                is correct before sending the form.
+            </p>
+
+            <div class="confirmation-box">
+
+                <p>
+                    <strong>First Name:</strong>
+                    <span id="showFirstname"></span>
+                </p>
+
+                <p>
+                    <strong>Last Name:</strong>
+                    <span id="showLastname"></span>
+                </p>
+
+                <p>
+                    <strong>Street Address:</strong>
+                    <span id="showAddress"></span>
+                </p>
+
+                <p>
+                    <strong>City:</strong>
+                    <span id="showCity"></span>
+                </p>
+
+                <p>
+                    <strong>State:</strong>
+                    <span id="showState"></span>
+                </p>
+
+                <p>
+                    <strong>ZIP Code:</strong>
+                    <span id="showZip"></span>
+                </p>
+
+                <p>
+                    <strong>Phone Number:</strong>
+                    <span id="showPhone"></span>
+                </p>
+
+                <p>
+                    <strong>Email Address:</strong>
+                    <span id="showEmail"></span>
+                </p>
+
+                <p>
+                    <strong>Birth Date:</strong>
+                    <span id="showBirthdate"></span>
+                </p>
+
+                <p>
+                    <strong>Message:</strong>
+                </p>
+
+                <p id="showMessage"
+                   class="confirmation-message">
+                </p>
+
+            </div>
+
+            <div class="form-buttons">
+
+                <button type="button"
+                        id="confirmButton"
+                        class="button">
+                    Confirm and Send
+                </button>
+
+                <a href="index.html"
+                   class="button secondary-button">
+                    Go Back and Edit
+                </a>
+
+            </div>
+
+            <p id="confirmationError"
+               class="form-error"
+               role="alert"
+               aria-live="polite">
+            </p>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Created by Nicholas Laskoski</p>
+        <p>COP4813 Web Programming</p>
+    </footer>
+
+
+    <script>
+
+        const savedData =
+            sessionStorage.getItem("assignment3FormData");
+
+        const errorBox =
+            document.getElementById("confirmationError");
+
+
+        if (!savedData) {
+
+            errorBox.textContent =
+                "No form information was found. Please return to the form and complete it.";
+
+            document.getElementById("confirmButton").disabled = true;
+
+        } else {
+
+            const formData = JSON.parse(savedData);
+
+
+            // Display entered information.
+            document.getElementById("showFirstname").textContent =
+                formData.firstname;
+
+            document.getElementById("showLastname").textContent =
+                formData.lastname;
+
+            document.getElementById("showAddress").textContent =
+                formData.address;
+
+            document.getElementById("showCity").textContent =
+                formData.city;
+
+            document.getElementById("showState").textContent =
+                formData.state;
+
+            document.getElementById("showZip").textContent =
+                formData.zip;
+
+            document.getElementById("showPhone").textContent =
+                formData.phone;
+
+            document.getElementById("showEmail").textContent =
+                formData.email;
+
+            document.getElementById("showBirthdate").textContent =
+                formData.birthdate;
+
+            document.getElementById("showMessage").textContent =
+                formData.message;
+
+
+            // Confirm and prepare email.
+            document.getElementById("confirmButton")
+                .addEventListener("click", function () {
+
+                    const subject =
+                        encodeURIComponent(
+                            "COP4813 Assignment 3 Form Submission"
+                        );
+
+
+                    const body =
+                        encodeURIComponent(
+
+                            "Name: " +
+                            formData.firstname +
+                            " " +
+                            formData.lastname +
+                            "\n\n" +
+
+                            "Address: " +
+                            formData.address +
+                            "\n" +
+
+                            formData.city +
+                            ", " +
+                            formData.state +
+                            " " +
+                            formData.zip +
+                            "\n\n" +
+
+                            "Phone: " +
+                            formData.phone +
+                            "\n\n" +
+
+                            "Email: " +
+                            formData.email +
+                            "\n\n" +
+
+                            "Birth Date: " +
+                            formData.birthdate +
+                            "\n\n" +
+
+                            "Message:\n" +
+                            formData.message
+
+                        );
+
+
+                    window.location.href =
+                        "mailto:Nicholas_laskoski@daytonastate.edu?subject=" +
+                        subject +
+                        "&body=" +
+                        body;
+
+                });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

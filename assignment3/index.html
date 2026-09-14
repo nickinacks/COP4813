@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="COP4813 Assignment 3 user information form created by Nicholas Laskoski.">
+
+    <meta name="author"
+          content="Nicholas Laskoski">
+
+    <title>Assignment 3 Form | Nicholas Laskoski</title>
+
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Assignment 3</h1>
+        <p>User Information Form</p>
+    </header>
+
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About Me</a></li>
+            <li><a href="../assignments.html">My Assignments</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section class="form-section">
+
+            <h2>Contact Information Form</h2>
+
+            <p>
+                Please complete all required fields below.
+                Your information will be validated before continuing.
+            </p>
+
+            <p class="required-note">
+                All fields are required.
+            </p>
+
+            <form id="userForm">
+
+                <!-- NAME -->
+                <fieldset>
+                    <legend>Name</legend>
+
+                    <div class="form-group">
+                        <label for="firstname">First Name:</label>
+
+                        <input type="text"
+                               id="firstname"
+                               name="firstname"
+                               required
+                               autocomplete="given-name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastname">Last Name:</label>
+
+                        <input type="text"
+                               id="lastname"
+                               name="lastname"
+                               required
+                               autocomplete="family-name">
+                    </div>
+                </fieldset>
+
+
+                <!-- ADDRESS -->
+                <fieldset>
+                    <legend>Mailing Address</legend>
+
+                    <div class="form-group">
+                        <label for="address">Street Address:</label>
+
+                        <input type="text"
+                               id="address"
+                               name="address"
+                               required
+                               autocomplete="street-address"
+                               placeholder="123 Main Street">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">City:</label>
+
+                        <input type="text"
+                               id="city"
+                               name="city"
+                               required
+                               autocomplete="address-level2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">State:</label>
+
+                        <select id="state"
+                                name="state"
+                                required
+                                autocomplete="address-level1">
+
+                            <option value="">Select a State</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zip">ZIP Code:</label>
+
+                        <input type="text"
+                               id="zip"
+                               name="zip"
+                               required
+                               inputmode="numeric"
+                               autocomplete="postal-code"
+                               maxlength="5"
+                               pattern="[0-9]{5}"
+                               title="Enter a valid 5-digit ZIP code"
+                               placeholder="32164">
+                    </div>
+
+                </fieldset>
+
+
+                <!-- CONTACT INFORMATION -->
+                <fieldset>
+                    <legend>Contact Information</legend>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+
+                        <input type="tel"
+                               id="phone"
+                               name="phone"
+                               required
+                               autocomplete="tel"
+                               maxlength="13"
+                               pattern="\([0-9]{3}\)[0-9]{3}-[0-9]{4}"
+                               title="Enter a phone number in the format (000)000-0000"
+                               placeholder="(386)555-1234">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address:</label>
+
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               required
+                               autocomplete="email"
+                               placeholder="name@example.com">
+                    </div>
+
+                </fieldset>
+
+
+                <!-- BIRTH DATE -->
+                <fieldset>
+                    <legend>Birth Date</legend>
+
+                    <div class="form-group">
+                        <label for="birthdate">Date of Birth:</label>
+
+                        <input type="date"
+                               id="birthdate"
+                               name="birthdate"
+                               required
+                               autocomplete="bday">
+
+                        <small>
+                            Birth date cannot be a future date.
+                        </small>
+                    </div>
+
+                </fieldset>
+
+
+                <!-- MESSAGE -->
+                <fieldset>
+                    <legend>Message</legend>
+
+                    <div class="form-group">
+                        <label for="message">Your Message:</label>
+
+                        <textarea id="message"
+                                  name="message"
+                                  rows="6"
+                                  required
+                                  placeholder="Enter your message here..."></textarea>
+                    </div>
+
+                </fieldset>
+
+
+                <!-- HUMAN CONFIRMATION -->
+                <fieldset>
+                    <legend>Security Check</legend>
+
+                    <div class="form-group">
+
+                        <label for="confirm">
+                            To confirm you are human, what is 4 + 3?
+                        </label>
+
+                        <input type="number"
+                               id="confirm"
+                               name="confirm"
+                               required
+                               min="7"
+                               max="7"
+                               placeholder="Enter answer">
+
+                    </div>
+
+                </fieldset>
+
+
+                <!-- ERROR MESSAGE -->
+                <div id="formError"
+                     class="form-error"
+                     role="alert"
+                     aria-live="polite">
+                </div>
+
+
+                <!-- SUBMIT BUTTON -->
+                <div class="form-buttons">
+
+                    <button type="submit"
+                            class="button">
+                        Review Information
+                    </button>
+
+                    <button type="reset"
+                            class="button secondary-button">
+                        Clear Form
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>Created by Nicholas Laskoski</p>
+        <p>COP4813 Web Programming</p>
+    </footer>
+
+
+    <script>
+
+        const form = document.getElementById("userForm");
+        const phone = document.getElementById("phone");
+        const birthdate = document.getElementById("birthdate");
+        const errorBox = document.getElementById("formError");
+
+
+        // Prevent a future birth date from being selected.
+        const today = new Date().toISOString().split("T")[0];
+        birthdate.max = today;
+
+
+        // Phone number input mask.
+        phone.addEventListener("input", function () {
+
+            let numbers = phone.value.replace(/\D/g, "");
+
+            numbers = numbers.substring(0, 10);
+
+            if (numbers.length >= 7) {
+
+                phone.value =
+                    "(" +
+                    numbers.substring(0, 3) +
+                    ")" +
+                    numbers.substring(3, 6) +
+                    "-" +
+                    numbers.substring(6, 10);
+
+            } else if (numbers.length >= 4) {
+
+                phone.value =
+                    "(" +
+                    numbers.substring(0, 3) +
+                    ")" +
+                    numbers.substring(3);
+
+            } else if (numbers.length > 0) {
+
+                phone.value =
+                    "(" +
+                    numbers;
+
+            }
+
+        });
+
+
+        // Validate form when user selects Review Information.
+        form.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            errorBox.textContent = "";
+
+
+            // Remove extra spaces from text fields.
+            const firstname =
+                document.getElementById("firstname").value.trim();
+
+            const lastname =
+                document.getElementById("lastname").value.trim();
+
+            const address =
+                document.getElementById("address").value.trim();
+
+            const city =
+                document.getElementById("city").value.trim();
+
+            const message =
+                document.getElementById("message").value.trim();
+
+
+            // Make sure text fields contain actual information.
+            if (
+                firstname === "" ||
+                lastname === "" ||
+                address === "" ||
+                city === "" ||
+                message === ""
+            ) {
+
+                errorBox.textContent =
+                    "Please complete all required fields.";
+
+                return;
+            }
+
+
+            // Validate names.
+            const namePattern = /^[A-Za-z][A-Za-z\s'-]*$/;
+
+            if (
+                !namePattern.test(firstname) ||
+                !namePattern.test(lastname)
+            ) {
+
+                errorBox.textContent =
+                    "Please enter a valid first and last name.";
+
+                return;
+            }
+
+
+            // Validate street address.
+            const addressPattern =
+                /^(?=.*\d)(?=.*[A-Za-z]).{5,}$/;
+
+            if (!addressPattern.test(address)) {
+
+                errorBox.textContent =
+                    "Please enter a valid street address containing a street number and street name.";
+
+                return;
+            }
+
+
+            // Validate city.
+            const cityPattern =
+                /^[A-Za-z][A-Za-z\s.'-]*$/;
+
+            if (!cityPattern.test(city)) {
+
+                errorBox.textContent =
+                    "Please enter a valid city.";
+
+                return;
+            }
+
+
+            // Validate ZIP code.
+            const zip =
+                document.getElementById("zip").value;
+
+            if (!/^\d{5}$/.test(zip)) {
+
+                errorBox.textContent =
+                    "Please enter a valid 5-digit ZIP code.";
+
+                return;
+            }
+
+
+            // Validate phone number.
+            if (
+                !/^\(\d{3}\)\d{3}-\d{4}$/.test(phone.value)
+            ) {
+
+                errorBox.textContent =
+                    "Please enter a complete 10-digit phone number.";
+
+                return;
+            }
+
+
+            // Validate birth date.
+            const selectedBirthdate =
+                new Date(birthdate.value + "T00:00:00");
+
+            const currentDate = new Date();
+
+            if (selectedBirthdate > currentDate) {
+
+                errorBox.textContent =
+                    "Birth date cannot be in the future.";
+
+                return;
+            }
+
+
+            // Validate security question.
+            const confirmation =
+                document.getElementById("confirm").value;
+
+            if (confirmation !== "7") {
+
+                errorBox.textContent =
+                    "The security question is incorrect. Please try again.";
+
+                return;
+            }
+
+
+            // Store information temporarily for confirmation page.
+            const formData = {
+
+                firstname: firstname,
+                lastname: lastname,
+                address: address,
+                city: city,
+
+                state:
+                    document.getElementById("state").value,
+
+                zip: zip,
+
+                phone:
+                    phone.value,
+
+                email:
+                    document.getElementById("email").value,
+
+                birthdate:
+                    birthdate.value,
+
+                message:
+                    message
+
+            };
+
+
+            sessionStorage.setItem(
+                "assignment3FormData",
+                JSON.stringify(formData)
+            );
+
+
+            // Go to confirmation page.
+            window.location.href = "confirmation.html";
+
+        });
+
+    </script>
+
+</body>
+
+</html>
