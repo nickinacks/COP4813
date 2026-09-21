@@ -1,0 +1,476 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="COP4813 Assignment 4 network data transfer calculator with an interactive graph.">
+
+    <meta name="author" content="Nicholas Laskoski">
+
+    <title>Assignment 4 | Network Transfer Calculator</title>
+
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        .calculator-container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .equation-box {
+            background-color: #eef5fb;
+            border-left: 5px solid #1f5f99;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .equation {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #163f63;
+            text-align: center;
+        }
+
+        .calculator-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .calculator-field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .calculator-field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #777;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .calculator-field input:focus {
+            outline: 3px solid #9ac7ee;
+            border-color: #1f5f99;
+        }
+
+        .calculator-buttons {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .calculator-buttons button {
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .calculator-error {
+            color: #a40000;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .results-section {
+            margin-top: 30px;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 12px;
+            border: 1px solid #c9d6e2;
+            text-align: center;
+        }
+
+        .results-table th {
+            background-color: #1f5f99;
+            color: white;
+        }
+
+        .results-table tbody tr:nth-child(even) {
+            background-color: #eef5fb;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .calculator-form {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 7px;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Assignment 4</h1>
+        <p>Network Data Transfer Calculator</p>
+    </header>
+
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About Me</a></li>
+            <li><a href="../assignments.html">My Assignments</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="calculator-container">
+
+            <h2>Network Transfer Time Calculator</h2>
+
+            <p>
+                Calculate how long it takes to transfer a file
+                at different network speeds. Enter a file size,
+                starting speed, ending speed, and speed increment.
+            </p>
+
+            <div class="equation-box">
+                <h3>Equation</h3>
+
+                <p class="equation">T = (8 × S) / R</p>
+
+                <p>
+                    <strong>T</strong> = Transfer time in seconds<br>
+                    <strong>S</strong> = File size in megabytes (MB)<br>
+                    <strong>R</strong> = Network speed in megabits per second (Mbps)
+                </p>
+
+                <p>
+                    This equation assumes a constant transfer speed
+                    and does not include network overhead or latency.
+                </p>
+            </div>
+
+            <form id="calculatorForm" class="calculator-form">
+
+                <div class="calculator-field">
+                    <label for="fileSize">File Size (MB)</label>
+                    <input type="number"
+                           id="fileSize"
+                           name="fileSize"
+                           value="500"
+                           min="0.01"
+                           step="any"
+                           required>
+                </div>
+
+                <div class="calculator-field">
+                    <label for="startSpeed">Starting Speed (Mbps)</label>
+                    <input type="number"
+                           id="startSpeed"
+                           name="startSpeed"
+                           value="10"
+                           min="0.01"
+                           step="any"
+                           required>
+                </div>
+
+                <div class="calculator-field">
+                    <label for="endSpeed">Ending Speed (Mbps)</label>
+                    <input type="number"
+                           id="endSpeed"
+                           name="endSpeed"
+                           value="100"
+                           min="0.01"
+                           step="any"
+                           required>
+                </div>
+
+                <div class="calculator-field">
+                    <label for="speedStep">Speed Increment (Mbps)</label>
+                    <input type="number"
+                           id="speedStep"
+                           name="speedStep"
+                           value="10"
+                           min="0.01"
+                           step="any"
+                           required>
+                </div>
+
+                <div class="calculator-buttons">
+                    <button type="submit" class="button">
+                        Calculate and Plot
+                    </button>
+
+                    <button type="reset" class="button secondary-button">
+                        Reset Values
+                    </button>
+                </div>
+
+            </form>
+
+            <p id="calculatorError"
+               class="calculator-error"
+               role="alert"
+               aria-live="polite"></p>
+
+        </section>
+
+        <section class="results-section">
+
+            <h2>Calculation Results</h2>
+
+            <p id="resultSummary" aria-live="polite">
+                Select "Calculate and Plot" to see your results.
+            </p>
+
+            <div class="chart-container">
+                <canvas id="transferChart"
+                        role="img"
+                        aria-label="Line graph showing transfer time in seconds versus network speed in megabits per second.">
+                </canvas>
+            </div>
+
+            <h3>Transfer Time Table</h3>
+
+            <div style="overflow-x: auto;">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Network Speed (Mbps)</th>
+                            <th scope="col">Transfer Time (seconds)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="resultsBody">
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>Created by Nicholas Laskoski</p>
+        <p>COP4813 Web Programming</p>
+    </footer>
+
+    <script>
+        const calculatorForm =
+            document.getElementById("calculatorForm");
+
+        const errorBox =
+            document.getElementById("calculatorError");
+
+        const resultsBody =
+            document.getElementById("resultsBody");
+
+        const resultSummary =
+            document.getElementById("resultSummary");
+
+        let transferChart = null;
+
+        function calculateTransferTime(fileSize, speed) {
+            return (8 * fileSize) / speed;
+        }
+
+        function calculateAndPlot(event) {
+            event.preventDefault();
+
+            errorBox.textContent = "";
+
+            const fileSize =
+                Number(document.getElementById("fileSize").value);
+
+            const startSpeed =
+                Number(document.getElementById("startSpeed").value);
+
+            const endSpeed =
+                Number(document.getElementById("endSpeed").value);
+
+            const speedStep =
+                Number(document.getElementById("speedStep").value);
+
+            const inputs =
+                [fileSize, startSpeed, endSpeed, speedStep];
+
+            if (inputs.some(value =>
+                !Number.isFinite(value) || value <= 0
+            )) {
+                errorBox.textContent =
+                    "All values must be positive numbers greater than zero.";
+                return;
+            }
+
+            if (endSpeed <= startSpeed) {
+                errorBox.textContent =
+                    "Ending speed must be greater than starting speed.";
+                return;
+            }
+
+            const pointCount =
+                Math.ceil((endSpeed - startSpeed) / speedStep) + 1;
+
+            if (!Number.isFinite(pointCount) || pointCount > 101) {
+                errorBox.textContent =
+                    "Please choose a larger speed increment. A maximum of 101 points is allowed.";
+                return;
+            }
+
+            if (typeof Chart === "undefined") {
+                errorBox.textContent =
+                    "The chart library could not load. Please check your internet connection and refresh the page.";
+                return;
+            }
+
+            const results = [];
+
+            for (let i = 0; i < pointCount; i++) {
+                const speed = Math.min(
+                    startSpeed + i * speedStep,
+                    endSpeed
+                );
+
+                const time =
+                    calculateTransferTime(fileSize, speed);
+
+                if (!Number.isFinite(time)) {
+                    errorBox.textContent =
+                        "These values produce a result that is too large. Please enter smaller values.";
+                    return;
+                }
+
+                results.push({
+                    speed: speed,
+                    time: time
+                });
+            }
+
+            resultsBody.replaceChildren();
+
+            for (const result of results) {
+                const row = document.createElement("tr");
+
+                const speedCell = document.createElement("td");
+                speedCell.textContent = result.speed.toFixed(2);
+
+                const timeCell = document.createElement("td");
+                timeCell.textContent = result.time.toFixed(2);
+
+                row.appendChild(speedCell);
+                row.appendChild(timeCell);
+
+                resultsBody.appendChild(row);
+            }
+
+            resultSummary.textContent =
+                "For a " + fileSize + " MB file, transfer time decreases " +
+                "as network speed increases. " +
+                results.length + " data points were calculated.";
+
+            if (transferChart !== null) {
+                transferChart.destroy();
+            }
+
+            const chartContext =
+                document.getElementById("transferChart");
+
+            transferChart = new Chart(chartContext, {
+                type: "line",
+
+                data: {
+                    datasets: [{
+                        label: "Transfer Time (seconds)",
+                        data: results.map(result => ({
+                            x: result.speed,
+                            y: result.time
+                        })),
+                        borderColor: "#1f5f99",
+                        backgroundColor: "#9ac7ee",
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        tension: 0.2
+                    }]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Network Speed vs. Transfer Time"
+                        }
+                    },
+
+                    scales: {
+                        x: {
+                            type: "linear",
+                            title: {
+                                display: true,
+                                text: "Network Speed (Mbps)"
+                            }
+                        },
+
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Transfer Time (seconds)"
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        calculatorForm.addEventListener(
+            "submit",
+            calculateAndPlot
+        );
+
+        calculatorForm.addEventListener("reset", function () {
+            errorBox.textContent = "";
+            resultsBody.replaceChildren();
+
+            resultSummary.textContent =
+                'Select "Calculate and Plot" to see your results.';
+
+            if (transferChart !== null) {
+                transferChart.destroy();
+                transferChart = null;
+            }
+        });
+
+        // Automatically display the example calculation.
+        calculatorForm.requestSubmit();
+    </script>
+
+</body>
+</html>
