@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="COP4813 Assignment 5 HTML5 Canvas Spirograph created by Nicholas Laskoski.">
+
+    <meta name="author"
+          content="Nicholas Laskoski">
+
+    <title>Assignment 5 | Canvas Spirograph</title>
+
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+
+        .spirograph-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .equation-box {
+            background-color: #eef5fb;
+            border-left: 5px solid #1f5f99;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .equation {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #163f63;
+            overflow-wrap: anywhere;
+        }
+
+        .spirograph-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .control-group input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #777777;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .control-group input:focus {
+            outline: 3px solid #9ac7ee;
+            border-color: #1f5f99;
+        }
+
+        .control-group small {
+            display: block;
+            margin-top: 5px;
+        }
+
+        .spirograph-button-area {
+            margin: 20px 0;
+        }
+
+        #startButton {
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .canvas-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 25px;
+        }
+
+        #spiroCanvas {
+            display: block;
+            background-color: #ffffff;
+            border: 2px solid #1f5f99;
+            border-radius: 10px;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        .spiro-error {
+            color: #a40000;
+            font-weight: bold;
+            min-height: 25px;
+        }
+
+        .spiro-status {
+            font-weight: bold;
+            color: #163f63;
+            min-height: 25px;
+        }
+
+        @media (max-width: 700px) {
+
+            .spirograph-controls {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <header>
+        <h1>Assignment 5</h1>
+        <p>HTML5 Canvas Spirograph</p>
+    </header>
+
+
+    <nav aria-label="Main navigation">
+
+        <ul>
+
+            <li>
+                <a href="../index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="../about.html">
+                    About Me
+                </a>
+            </li>
+
+            <li>
+                <a href="../assignments.html">
+                    My Assignments
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <main>
+
+        <section class="spirograph-container">
+
+            <h2>Interactive Spirograph</h2>
+
+            <p>
+                Enter values for the outer circle radius, inner circle
+                radius, and pen offset. Then select
+                <strong>Start Spirograph</strong> to draw the pattern
+                using the HTML5 Canvas and JavaScript.
+            </p>
+
+
+            <div class="equation-box">
+
+                <h3>Spirograph Equations</h3>
+
+                <p class="equation">
+                    x = (R + r) × cos(t) -
+                    (r + O) × cos(((R + r) / r) × t)
+                </p>
+
+                <p class="equation">
+                    y = (R + r) × sin(t) -
+                    (r + O) × sin(((R + r) / r) × t)
+                </p>
+
+                <p>
+                    <strong>R</strong> = radius of the outer fixed circle
+                    <br>
+
+                    <strong>r</strong> = radius of the rotating inner circle
+                    <br>
+
+                    <strong>O</strong> = offset of the pen from the center
+                    of the inner circle
+                </p>
+
+            </div>
+
+
+            <h3>Spirograph Settings</h3>
+
+            <p>
+                The fields below contain working example values.
+                You can change them to create different patterns.
+            </p>
+
+
+            <div class="spirograph-controls">
+
+                <div class="control-group">
+
+                    <label for="outerRadius">
+                        Outer Radius (R)
+                    </label>
+
+                    <input type="number"
+                           id="outerRadius"
+                           value="120"
+                           min="50"
+                           max="180"
+                           step="1">
+
+                    <small>
+                        Enter a value from 50 to 180.
+                    </small>
+
+                </div>
+
+
+                <div class="control-group">
+
+                    <label for="innerRadius">
+                        Inner Radius (r)
+                    </label>
+
+                    <input type="number"
+                           id="innerRadius"
+                           value="45"
+                           min="10"
+                           max="90"
+                           step="1">
+
+                    <small>
+                        Enter a value from 10 to 90.
+                    </small>
+
+                </div>
+
+
+                <div class="control-group">
+
+                    <label for="penOffset">
+                        Pen Offset (O)
+                    </label>
+
+                    <input type="number"
+                           id="penOffset"
+                           value="35"
+                           min="0"
+                           max="80"
+                           step="1">
+
+                    <small>
+                        Enter a value from 0 to 80.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="spirograph-button-area">
+
+                <button type="button"
+                        id="startButton"
+                        class="button">
+                    Start Spirograph
+                </button>
+
+            </div>
+
+
+            <p id="errorMessage"
+               class="spiro-error"
+               role="alert"
+               aria-live="assertive">
+            </p>
+
+            <p id="statusMessage"
+               class="spiro-status"
+               aria-live="polite">
+                Enter your values and select Start Spirograph.
+            </p>
+
+
+            <div class="canvas-wrapper">
+
+                <canvas id="spiroCanvas"
+                        width="800"
+                        height="600"
+                        aria-label="Canvas displaying the generated Spirograph">
+                    Your browser does not support the HTML5 Canvas element.
+                </canvas>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>Created by Nicholas Laskoski</p>
+
+        <p>COP4813 Web Programming</p>
+
+    </footer>
+
+
+    <script>
+
+        const canvas =
+            document.getElementById("spiroCanvas");
+
+        const ctx =
+            canvas.getContext("2d");
+
+        const startButton =
+            document.getElementById("startButton");
+
+        const errorMessage =
+            document.getElementById("errorMessage");
+
+        const statusMessage =
+            document.getElementById("statusMessage");
+
+
+        let animationId = null;
+
+        let t = 0;
+
+        let R = 120;
+        let r = 45;
+        let O = 35;
+
+        let previousX = 0;
+        let previousY = 0;
+
+        let segmentCount = 0;
+
+        const maxSegments = 15000;
+
+        const tIncrement = 0.02;
+
+
+        /*
+            Calculate the X and Y position of the pen
+            using the Spirograph equations.
+        */
+
+        function getPosition(time) {
+
+            const x =
+                (R + r) * Math.cos(time) -
+                (r + O) *
+                Math.cos(((R + r) / r) * time);
+
+            const y =
+                (R + r) * Math.sin(time) -
+                (r + O) *
+                Math.sin(((R + r) / r) * time);
+
+            return {
+                x: x,
+                y: y
+            };
+
+        }
+
+
+        /*
+            Generate a random color for each
+            portion of the Spirograph.
+        */
+
+        function newColor() {
+
+            const red =
+                Math.floor(Math.random() * 200);
+
+            const green =
+                Math.floor(Math.random() * 200);
+
+            const blue =
+                Math.floor(Math.random() * 200);
+
+            return "rgb(" +
+                red + "," +
+                green + "," +
+                blue + ")";
+
+        }
+
+
+        /*
+            Draw one small section of the Spirograph.
+        */
+
+        function drawSpirograph() {
+
+            const position =
+                getPosition(t);
+
+
+            const currentX =
+                canvas.width / 2 + position.x;
+
+            const currentY =
+                canvas.height / 2 + position.y;
+
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                previousX,
+                previousY
+            );
+
+            ctx.lineTo(
+                currentX,
+                currentY
+            );
+
+
+            /*
+                Change the color every 50 segments.
+            */
+
+            if (segmentCount % 50 === 0) {
+
+                ctx.strokeStyle =
+                    newColor();
+
+            }
+
+
+            ctx.lineWidth = 2;
+
+            ctx.stroke();
+
+
+            previousX = currentX;
+
+            previousY = currentY;
+
+
+            t += tIncrement;
+
+            segmentCount++;
+
+
+            if (segmentCount < maxSegments) {
+
+                animationId =
+                    requestAnimationFrame(
+                        drawSpirograph
+                    );
+
+            } else {
+
+                animationId = null;
+
+                startButton.disabled = false;
+
+                statusMessage.textContent =
+                    "Spirograph drawing complete.";
+
+            }
+
+        }
+
+
+        /*
+            Validate user input and start drawing.
+        */
+
+        function startSpirograph() {
+
+            errorMessage.textContent = "";
+
+
+            const outerRadius =
+                Number(
+                    document.getElementById(
+                        "outerRadius"
+                    ).value
+                );
+
+
+            const innerRadius =
+                Number(
+                    document.getElementById(
+                        "innerRadius"
+                    ).value
+                );
+
+
+            const penOffset =
+                Number(
+                    document.getElementById(
+                        "penOffset"
+                    ).value
+                );
+
+
+            /*
+                Validate R.
+            */
+
+            if (
+                !Number.isFinite(outerRadius) ||
+                outerRadius < 50 ||
+                outerRadius > 180
+            ) {
+
+                errorMessage.textContent =
+                    "Outer Radius (R) must be between 50 and 180.";
+
+                return;
+
+            }
+
+
+            /*
+                Validate r.
+            */
+
+            if (
+                !Number.isFinite(innerRadius) ||
+                innerRadius < 10 ||
+                innerRadius > 90
+            ) {
+
+                errorMessage.textContent =
+                    "Inner Radius (r) must be between 10 and 90.";
+
+                return;
+
+            }
+
+
+            /*
+                The inner circle should be smaller
+                than the outer circle.
+            */
+
+            if (innerRadius >= outerRadius) {
+
+                errorMessage.textContent =
+                    "Inner Radius (r) must be smaller than Outer Radius (R).";
+
+                return;
+
+            }
+
+
+            /*
+                Validate O.
+            */
+
+            if (
+                !Number.isFinite(penOffset) ||
+                penOffset < 0 ||
+                penOffset > 80
+            ) {
+
+                errorMessage.textContent =
+                    "Pen Offset (O) must be between 0 and 80.";
+
+                return;
+
+            }
+
+
+            /*
+                Stop an existing animation if the
+                button is used again.
+            */
+
+            if (animationId !== null) {
+
+                cancelAnimationFrame(
+                    animationId
+                );
+
+            }
+
+
+            /*
+                Use the validated values.
+            */
+
+            R = outerRadius;
+
+            r = innerRadius;
+
+            O = penOffset;
+
+
+            /*
+                Clear the previous drawing.
+            */
+
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            /*
+                Reset drawing variables.
+            */
+
+            t = 0;
+
+            segmentCount = 0;
+
+
+            const startingPosition =
+                getPosition(0);
+
+
+            previousX =
+                canvas.width / 2 +
+                startingPosition.x;
+
+
+            previousY =
+                canvas.height / 2 +
+                startingPosition.y;
+
+
+            startButton.disabled = true;
+
+
+            statusMessage.textContent =
+                "Drawing Spirograph...";
+
+
+            /*
+                Begin the animation.
+            */
+
+            animationId =
+                requestAnimationFrame(
+                    drawSpirograph
+                );
+
+        }
+
+
+        startButton.addEventListener(
+            "click",
+            startSpirograph
+        );
+
+    </script>
+
+</body>
+
+</html>
