@@ -1,0 +1,70 @@
+{
+    "databaseName": "Cybersecurity Incident Database",
+    "lastUpdated": "2026",
+    "incidents": [
+        {
+            "incidentID": 1001,
+            "attackType": "Phishing",
+            "affectedSystem": "Employee Email",
+            "severity": "Medium",
+            "year": 2022,
+            "status": "Resolved"
+        },
+        {
+            "incidentID": 1002,
+            "attackType": "Ransomware",
+            "affectedSystem": "File Server",
+            "severity": "Critical",
+            "year": 2023,
+            "status": "Resolved"
+        },
+        {
+            "incidentID": 1003,
+            "attackType": "SQL Injection",
+            "affectedSystem": "Customer Database",
+            "severity": "High",
+            "year": 2023,
+            "status": "Resolved"
+        },
+        {
+            "incidentID": 1004,
+            "attackType": "Brute Force",
+            "affectedSystem": "Remote Login Server",
+            "severity": "Medium",
+            "year": 2024,
+            "status": "Resolved"
+        },
+        {
+            "incidentID": 1005,
+            "attackType": "Malware",
+            "affectedSystem": "Employee Workstation",
+            "severity": "High",
+            "year": 2024,
+            "status": "Resolved"
+        },
+        {
+            "incidentID": 1006,
+            "attackType": "DDoS",
+            "affectedSystem": "Public Web Server",
+            "severity": "High",
+            "year": 2025,
+            "status": "Resolved"
+        },
+        {
+            "incidentID": 1007,
+            "attackType": "Credential Theft",
+            "affectedSystem": "User Accounts",
+            "severity": "Critical",
+            "year": 2025,
+            "status": "Under Investigation"
+        },
+        {
+            "incidentID": 1008,
+            "attackType": "Cross-Site Scripting",
+            "affectedSystem": "Company Website",
+            "severity": "Medium",
+            "year": 2026,
+            "status": "Resolved"
+        }
+    ]
+}

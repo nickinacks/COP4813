@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="COP4813 Assignment 6 demonstrating external JSON data and JavaScript.">
+
+    <meta name="author"
+          content="Nicholas Laskoski">
+
+    <title>Assignment 6 | JSON Data</title>
+
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+
+        .json-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .info-box {
+            background-color: #eef5fb;
+            border-left: 5px solid #1f5f99;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+            color: #163f63;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 25px;
+        }
+
+        .incident-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        .incident-table th,
+        .incident-table td {
+            padding: 12px;
+            border: 1px solid #c9d6e2;
+            text-align: left;
+        }
+
+        .incident-table th {
+            background-color: #1f5f99;
+            color: white;
+        }
+
+        .incident-table tbody tr:nth-child(even) {
+            background-color: #eef5fb;
+        }
+
+        .incident-table tbody tr:hover {
+            background-color: #dcecf8;
+        }
+
+        .severity {
+            font-weight: bold;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #163f63;
+        }
+
+        .error-message {
+            color: #a40000;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            .incident-table th,
+            .incident-table td {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header>
+
+        <h1>Assignment 6</h1>
+
+        <p>External JSON Data with JavaScript</p>
+
+    </header>
+
+
+    <nav aria-label="Main navigation">
+
+        <ul>
+
+            <li>
+                <a href="../index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="../about.html">
+                    About Me
+                </a>
+            </li>
+
+            <li>
+                <a href="../assignments.html">
+                    My Assignments
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <main>
+
+        <section class="json-container">
+
+            <h2>Cybersecurity Incident Database</h2>
+
+            <p>
+                This page demonstrates how JavaScript can read data
+                from an external JSON file and dynamically display
+                the information in a human-readable format.
+            </p>
+
+
+            <div class="info-box">
+
+                <h3>About the Data</h3>
+
+                <p>
+                    The cybersecurity incident information displayed
+                    below is stored in a separate
+                    <strong>incidents.json</strong> file.
+                </p>
+
+                <p>
+                    JavaScript uses the Fetch API to retrieve the JSON
+                    file, parse the data into JavaScript objects, and
+                    create the table automatically.
+                </p>
+
+                <p>
+                    Because the data is stored separately from the HTML,
+                    the JSON file can be updated without changing the
+                    structure of this webpage.
+                </p>
+
+            </div>
+
+
+            <h3 id="databaseName">
+                Loading database...
+            </h3>
+
+            <p id="lastUpdated"></p>
+
+
+            <div class="table-wrapper">
+
+                <table class="incident-table">
+
+                    <thead>
+
+                        <tr>
+                            <th scope="col">Incident ID</th>
+                            <th scope="col">Attack Type</th>
+                            <th scope="col">Affected System</th>
+                            <th scope="col">Severity</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Status</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="incidentTableBody">
+
+                        <!-- JSON data will be inserted here -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <p id="statusMessage"
+               class="status-message"
+               aria-live="polite">
+                Loading JSON data...
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>Created by Nicholas Laskoski</p>
+
+        <p>COP4813 Web Programming</p>
+
+    </footer>
+
+
+    <script>
+
+        /*
+            Assignment 6
+            Read external JSON data and display
+            it in an HTML table.
+        */
+
+
+        const tableBody =
+            document.getElementById("incidentTableBody");
+
+        const databaseName =
+            document.getElementById("databaseName");
+
+        const lastUpdated =
+            document.getElementById("lastUpdated");
+
+        const statusMessage =
+            document.getElementById("statusMessage");
+
+
+        /*
+            Fetch the external JSON file.
+        */
+
+        fetch("incidents.json")
+
+            .then(function(response) {
+
+                /*
+                    Make sure the JSON file was
+                    successfully retrieved.
+                */
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to load the JSON file."
+                    );
+
+                }
+
+
+                /*
+                    Parse the JSON data into
+                    JavaScript objects.
+                */
+
+                return response.json();
+
+            })
+
+
+            .then(function(data) {
+
+                /*
+                    Display information from the
+                    main JSON object.
+                */
+
+                databaseName.textContent =
+                    data.databaseName;
+
+                lastUpdated.textContent =
+                    "Last Updated: " + data.lastUpdated;
+
+
+                /*
+                    Clear the table before adding
+                    the JSON records.
+                */
+
+                tableBody.replaceChildren();
+
+
+                /*
+                    Loop through the incidents array.
+                */
+
+                data.incidents.forEach(function(incident) {
+
+                    /*
+                        Create a new table row.
+                    */
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    /*
+                        Create the Incident ID cell.
+                    */
+
+                    const idCell =
+                        document.createElement("td");
+
+                    idCell.textContent =
+                        incident.incidentID;
+
+                    row.appendChild(idCell);
+
+
+                    /*
+                        Create the Attack Type cell.
+                    */
+
+                    const attackCell =
+                        document.createElement("td");
+
+                    attackCell.textContent =
+                        incident.attackType;
+
+                    row.appendChild(attackCell);
+
+
+                    /*
+                        Create the Affected System cell.
+                    */
+
+                    const systemCell =
+                        document.createElement("td");
+
+                    systemCell.textContent =
+                        incident.affectedSystem;
+
+                    row.appendChild(systemCell);
+
+
+                    /*
+                        Create the Severity cell.
+                    */
+
+                    const severityCell =
+                        document.createElement("td");
+
+                    severityCell.textContent =
+                        incident.severity;
+
+                    severityCell.className =
+                        "severity";
+
+                    row.appendChild(severityCell);
+
+
+                    /*
+                        Create the Year cell.
+                    */
+
+                    const yearCell =
+                        document.createElement("td");
+
+                    yearCell.textContent =
+                        incident.year;
+
+                    row.appendChild(yearCell);
+
+
+                    /*
+                        Create the Status cell.
+                    */
+
+                    const statusCell =
+                        document.createElement("td");
+
+                    statusCell.textContent =
+                        incident.status;
+
+                    row.appendChild(statusCell);
+
+
+                    /*
+                        Add the completed row
+                        to the table.
+                    */
+
+                    tableBody.appendChild(row);
+
+                });
+
+
+                /*
+                    Display the number of records
+                    loaded from the JSON file.
+                */
+
+                statusMessage.textContent =
+                    data.incidents.length +
+                    " cybersecurity incident records loaded successfully.";
+
+            })
+
+
+            .catch(function(error) {
+
+                /*
+                    Display an error if the JSON
+                    file cannot be loaded.
+                */
+
+                databaseName.textContent =
+                    "Cybersecurity Incident Database";
+
+                lastUpdated.textContent = "";
+
+                statusMessage.textContent =
+                    "The JSON data could not be loaded. " +
+                    "This page must be opened through a web server.";
+
+                statusMessage.className =
+                    "error-message";
+
+                console.error(
+                    "JSON Error:",
+                    error
+                );
+
+            });
+
+    </script>
+
+</body>
+
+</html>
