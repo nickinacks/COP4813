@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="COP4813 Assignment 7 HTML5 drag and drop card game.">
+
+    <meta name="author" content="Nicholas Laskoski">
+
+    <title>Assignment 7 | Card Dealer Game</title>
+
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        .game-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .instructions {
+            background: #eef5fb;
+            border-left: 5px solid #1f5f99;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .poker-table {
+            background: radial-gradient(
+                ellipse at center,
+                #247b50 0%,
+                #155c3a 65%,
+                #0b3826 100%
+            );
+            border: 12px solid #754c29;
+            border-radius: 35px;
+            padding: 35px 20px;
+            min-height: 430px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .table-heading {
+            color: white;
+            margin-top: 0;
+        }
+
+        .card-hand {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            min-height: 160px;
+            margin: 25px 0;
+        }
+
+        .playing-card {
+            position: relative;
+            width: 100px;
+            height: 145px;
+            background: white;
+            border: 2px solid #dddddd;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            cursor: grab;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .playing-card:active {
+            cursor: grabbing;
+        }
+
+        .playing-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .playing-card.red {
+            color: #d41424;
+        }
+
+        .playing-card.black {
+            color: #111111;
+        }
+
+        .card-corner {
+            position: absolute;
+            top: 7px;
+            left: 9px;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+
+        .card-corner-bottom {
+            position: absolute;
+            bottom: 7px;
+            right: 9px;
+            transform: rotate(180deg);
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+
+        .card-symbol {
+            font-size: 57px;
+        }
+
+        .discard-pile {
+            border: 4px dashed #ffffff;
+            border-radius: 15px;
+            background: rgba(0,0,0,0.22);
+            color: white;
+            min-height: 150px;
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .discard-pile.drag-over {
+            background: rgba(255,255,255,0.25);
+            border-color: #ffdf73;
+        }
+
+        .discard-pile h3 {
+            color: white;
+            margin: 0 0 8px;
+        }
+
+        .discard-pile p {
+            margin: 4px;
+        }
+
+        .game-buttons {
+            margin: 25px 0;
+        }
+
+        .game-buttons button {
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .game-message {
+            font-weight: bold;
+            color: #163f63;
+            font-size: 1.1rem;
+            min-height: 30px;
+            margin-top: 20px;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            color: white;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .poker-table {
+                padding: 20px 10px;
+            }
+
+            .playing-card {
+                width: 75px;
+                height: 110px;
+            }
+
+            .card-symbol {
+                font-size: 40px;
+            }
+
+            .card-corner,
+            .card-corner-bottom {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Assignment 7</h1>
+        <p>HTML5 Drag-and-Drop Card Game</p>
+    </header>
+
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About Me</a></li>
+            <li><a href="../assignments.html">My Assignments</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="game-container">
+
+            <h2>Card Dealer and Discard Game</h2>
+
+            <div class="instructions">
+                <h3>How to Play</h3>
+
+                <p>
+                    Click <strong>Deal Cards</strong> to receive
+                    five random playing cards from a standard
+                    52-card deck.
+                </p>
+
+                <p>
+                    Drag any card from your hand into the
+                    <strong>Discard Pile</strong> to remove it.
+                    A confirmation message will appear when
+                    the card is successfully discarded.
+                </p>
+
+                <p>
+                    Click Deal Cards again to start a new hand.
+                </p>
+            </div>
+
+            <div class="game-buttons">
+                <button type="button"
+                        id="dealButton"
+                        class="button">
+                    Deal Cards
+                </button>
+            </div>
+
+            <div class="poker-table">
+
+                <h3 class="table-heading">Your Hand</h3>
+
+                <div id="cardHand"
+                     class="card-hand"
+                     aria-label="Your playing cards">
+                </div>
+
+                <div class="game-stats">
+                    <span id="cardsRemaining">
+                        Cards in Hand: 0
+                    </span>
+
+                    <span id="cardsDiscarded">
+                        Cards Discarded: 0
+                    </span>
+                </div>
+
+                <div id="discardPile"
+                     class="discard-pile"
+                     aria-label="Discard pile">
+
+                    <h3>Discard Pile</h3>
+
+                    <p>Drag cards here to discard</p>
+
+                    <p id="discardCount">0 discarded</p>
+
+                </div>
+
+            </div>
+
+            <p id="gameMessage"
+               class="game-message"
+               role="status"
+               aria-live="polite">
+                Click Deal Cards to begin!
+            </p>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>Created by Nicholas Laskoski</p>
+        <p>COP4813 Web Programming</p>
+    </footer>
+
+    <script>
+        const dealButton =
+            document.getElementById("dealButton");
+
+        const cardHand =
+            document.getElementById("cardHand");
+
+        const discardPile =
+            document.getElementById("discardPile");
+
+        const gameMessage =
+            document.getElementById("gameMessage");
+
+        const cardsRemaining =
+            document.getElementById("cardsRemaining");
+
+        const cardsDiscarded =
+            document.getElementById("cardsDiscarded");
+
+        const discardCount =
+            document.getElementById("discardCount");
+
+        let currentHand = [];
+        let discardedCards = [];
+        let draggedCardId = null;
+
+        const suits = [
+            { name: "Spades", symbol: "♠", color: "black" },
+            { name: "Hearts", symbol: "♥", color: "red" },
+            { name: "Diamonds", symbol: "♦", color: "red" },
+            { name: "Clubs", symbol: "♣", color: "black" }
+        ];
+
+        const ranks = [
+            "Ace", "2", "3", "4", "5", "6", "7",
+            "8", "9", "10", "Jack", "Queen", "King"
+        ];
+
+        const rankSymbols = {
+            "Ace": "A",
+            "Jack": "J",
+            "Queen": "Q",
+            "King": "K"
+        };
+
+        /*
+            Create a complete 52-card deck.
+        */
+
+        function createDeck() {
+            const deck = [];
+
+            suits.forEach(function(suit) {
+                ranks.forEach(function(rank) {
+                    deck.push({
+                        id: suit.name + "-" + rank,
+                        rank: rank,
+                        suit: suit.name,
+                        symbol: suit.symbol,
+                        color: suit.color
+                    });
+                });
+            });
+
+            return deck;
+        }
+
+        /*
+            Shuffle the deck using the
+            Fisher-Yates shuffle algorithm.
+        */
+
+        function shuffleDeck(deck) {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(
+                    Math.random() * (i + 1)
+                );
+
+                const temp = deck[i];
+                deck[i] = deck[j];
+                deck[j] = temp;
+            }
+
+            return deck;
+        }
+
+        /*
+            Display the cards in the hand.
+        */
+
+        function displayCards() {
+            cardHand.replaceChildren();
+
+            currentHand.forEach(function(card) {
+                const cardElement =
+                    document.createElement("div");
+
+                cardElement.className =
+                    "playing-card " + card.color;
+
+                cardElement.draggable = true;
+
+                cardElement.dataset.cardId = card.id;
+
+                cardElement.setAttribute(
+                    "aria-label",
+                    card.rank + " of " + card.suit
+                );
+
+                const rankDisplay =
+                    rankSymbols[card.rank] || card.rank;
+
+                const topCorner =
+                    document.createElement("div");
+
+                topCorner.className = "card-corner";
+
+                topCorner.textContent =
+                    rankDisplay + card.symbol;
+
+                const centerSymbol =
+                    document.createElement("div");
+
+                centerSymbol.className = "card-symbol";
+
+                centerSymbol.textContent = card.symbol;
+
+                const bottomCorner =
+                    document.createElement("div");
+
+                bottomCorner.className =
+                    "card-corner-bottom";
+
+                bottomCorner.textContent =
+                    rankDisplay + card.symbol;
+
+                cardElement.appendChild(topCorner);
+                cardElement.appendChild(centerSymbol);
+                cardElement.appendChild(bottomCorner);
+
+                /*
+                    Capture the dragstart event.
+                */
+
+                cardElement.addEventListener(
+                    "dragstart",
+                    function(event) {
+                        draggedCardId = card.id;
+
+                        event.dataTransfer.setData(
+                            "text/plain",
+                            card.id
+                        );
+
+                        event.dataTransfer.effectAllowed =
+                            "move";
+                    }
+                );
+
+                cardHand.appendChild(cardElement);
+            });
+
+            updateStats();
+        }
+
+        /*
+            Update card counters.
+        */
+
+        function updateStats() {
+            cardsRemaining.textContent =
+                "Cards in Hand: " + currentHand.length;
+
+            cardsDiscarded.textContent =
+                "Cards Discarded: " +
+                discardedCards.length;
+
+            discardCount.textContent =
+                discardedCards.length + " discarded";
+        }
+
+        /*
+            Deal five unique cards.
+        */
+
+        function dealCards() {
+            const deck = shuffleDeck(createDeck());
+
+            currentHand = deck.slice(0, 5);
+
+            discardedCards = [];
+
+            draggedCardId = null;
+
+            displayCards();
+
+            gameMessage.textContent =
+                "Five cards dealt! Drag a card to the discard pile.";
+        }
+
+        /*
+            Allow cards to be dropped
+            into the discard pile.
+        */
+
+        discardPile.addEventListener(
+            "dragover",
+            function(event) {
+                event.preventDefault();
+
+                event.dataTransfer.dropEffect = "move";
+
+                discardPile.classList.add("drag-over");
+            }
+        );
+
+        discardPile.addEventListener(
+            "dragleave",
+            function() {
+                discardPile.classList.remove("drag-over");
+            }
+        );
+
+        /*
+            Capture the drop event.
+        */
+
+        discardPile.addEventListener(
+            "drop",
+            function(event) {
+                event.preventDefault();
+
+                discardPile.classList.remove("drag-over");
+
+                const cardId =
+                    event.dataTransfer.getData("text/plain");
+
+                const cardIndex =
+                    currentHand.findIndex(function(card) {
+                        return card.id === cardId;
+                    });
+
+                if (cardIndex === -1) {
+                    return;
+                }
+
+                const discardedCard =
+                    currentHand.splice(cardIndex, 1)[0];
+
+                discardedCards.push(discardedCard);
+
+                draggedCardId = null;
+
+                displayCards();
+
+                gameMessage.textContent =
+                    discardedCard.rank + " of " +
+                    discardedCard.suit +
+                    " discarded successfully!";
+
+                if (currentHand.length === 0) {
+                    gameMessage.textContent +=
+                        " All cards have been discarded!";
+                }
+            }
+        );
+
+        dealButton.addEventListener(
+            "click",
+            dealCards
+        );
+
+    </script>
+
+</body>
+</html>
