@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="COP4813 Assignment 9 - Interactive bouncing neon ball animation using HTML5 Canvas and JavaScript.">
+
+    <meta name="author" content="Nicholas Laskoski">
+
+    <title>Assignment 9 | Neon Bouncing Ball</title>
+
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        .game-container {
+            text-align: center;
+        }
+
+        .game-container h2 {
+            color: #174a78;
+        }
+
+        .instructions {
+            background: #e8f3ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .canvas-wrapper {
+            max-width: 850px;
+            margin: 20px auto;
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #081225;
+            border: 4px solid #2487d6;
+            border-radius: 12px;
+            box-sizing: border-box;
+            cursor: crosshair;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        .controls button {
+            background: #1f5f99;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            margin: 5px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .controls button:hover {
+            background: #174a78;
+        }
+
+        .status-box {
+            background: #edf6ff;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .status-box p {
+            margin: 8px 0;
+        }
+
+        .highlight {
+            color: #1565c0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Assignment 9</h1>
+        <p>HTML5 Canvas and JavaScript Animation</p>
+    </header>
+
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About Me</a></li>
+            <li><a href="../assignments.html">My Assignments</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="game-container">
+
+            <h2>Neon Bouncing Ball</h2>
+
+            <div class="instructions">
+                <p>
+                    Watch the glowing ball bounce around the canvas!
+                    Click directly on the moving ball to create a
+                    colorful explosion, change its color, and send
+                    it in a new direction.
+                </p>
+            </div>
+
+            <div class="canvas-wrapper">
+                <canvas id="gameCanvas" width="800" height="450">
+                    Your browser does not support HTML5 Canvas.
+                </canvas>
+            </div>
+
+            <div class="controls">
+                <button id="pauseButton" type="button">
+                    Pause Animation
+                </button>
+
+                <button id="resetButton" type="button">
+                    Reset Animation
+                </button>
+            </div>
+
+            <div class="status-box" aria-live="polite">
+                <p>
+                    Ball Color:
+                    <span id="colorStatus" class="highlight">Blue</span>
+                </p>
+
+                <p>
+                    Successful Clicks:
+                    <span id="clickCount" class="highlight">0</span>
+                </p>
+
+                <p id="message">
+                    Animation started! Try clicking the moving ball.
+                </p>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>Created by Nicholas Laskoski</p>
+        <p>COP4813 Web Programming</p>
+    </footer>
+
+    <script>
+        "use strict";
+
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const pauseButton = document.getElementById("pauseButton");
+        const resetButton = document.getElementById("resetButton");
+
+        const colorStatus = document.getElementById("colorStatus");
+        const clickCount = document.getElementById("clickCount");
+        const message = document.getElementById("message");
+
+        const colors = [
+            { name: "Blue", hex: "#29b6f6" },
+            { name: "Purple", hex: "#bb86fc" },
+            { name: "Green", hex: "#39ff88" },
+            { name: "Pink", hex: "#ff4fa3" },
+            { name: "Orange", hex: "#ffab40" },
+            { name: "Yellow", hex: "#ffee58" }
+        ];
+
+        let colorIndex = 0;
+        let successfulClicks = 0;
+        let isRunning = true;
+        let particles = [];
+        let lastTime = 0;
+
+        const ball = {
+            x: 100,
+            y: 100,
+            radius: 23,
+            vx: 220,
+            vy: 170
+        };
+
+        function updateStatus() {
+            colorStatus.textContent = colors[colorIndex].name;
+            clickCount.textContent = successfulClicks;
+        }
+
+        function drawBackground() {
+            ctx.fillStyle = "#081225";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw a subtle grid.
+            ctx.strokeStyle = "rgba(60, 150, 255, 0.08)";
+            ctx.lineWidth = 1;
+
+            for (let x = 0; x <= canvas.width; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+
+            for (let y = 0; y <= canvas.height; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+        }
+
+        function drawBall() {
+            const currentColor = colors[colorIndex].hex;
+
+            ctx.save();
+
+            ctx.shadowBlur = 35;
+            ctx.shadowColor = currentColor;
+
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+
+            const gradient = ctx.createRadialGradient(
+                ball.x - 8,
+                ball.y - 8,
+                3,
+                ball.x,
+                ball.y,
+                ball.radius
+            );
+
+            gradient.addColorStop(0, "#ffffff");
+            gradient.addColorStop(0.3, currentColor);
+            gradient.addColorStop(1, currentColor);
+
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function createExplosion() {
+            const particleColors = [
+                "#29b6f6",
+                "#bb86fc",
+                "#39ff88",
+                "#ff4fa3",
+                "#ffab40",
+                "#ffee58"
+            ];
+
+            for (let i = 0; i < 45; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 60 + Math.random() * 230;
+
+                particles.push({
+                    x: ball.x,
+                    y: ball.y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    radius: 2 + Math.random() * 4,
+                    life: 0.8 + Math.random() * 0.5,
+                    maxLife: 1.3,
+                    color: particleColors[
+                        Math.floor(Math.random() * particleColors.length)
+                    ]
+                });
+            }
+        }
+
+        function updateParticles(dt) {
+            particles.forEach(function (particle) {
+                particle.x += particle.vx * dt;
+                particle.y += particle.vy * dt;
+
+                particle.vx *= Math.pow(0.97, dt * 60);
+                particle.vy *= Math.pow(0.97, dt * 60);
+
+                particle.life -= dt;
+            });
+
+            particles = particles.filter(function (particle) {
+                return particle.life > 0;
+            });
+        }
+
+        function drawParticles() {
+            particles.forEach(function (particle) {
+                ctx.save();
+
+                ctx.globalAlpha = Math.min(
+                    1,
+                    particle.life / particle.maxLife
+                );
+
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = particle.color;
+                ctx.fillStyle = particle.color;
+
+                ctx.beginPath();
+                ctx.arc(
+                    particle.x,
+                    particle.y,
+                    particle.radius,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fill();
+
+                ctx.restore();
+            });
+        }
+
+        function updateBall(dt) {
+            ball.x += ball.vx * dt;
+            ball.y += ball.vy * dt;
+
+            // Bounce off the left and right walls.
+            if (ball.x + ball.radius >= canvas.width) {
+                ball.x = canvas.width - ball.radius;
+                ball.vx = -Math.abs(ball.vx);
+            }
+
+            if (ball.x - ball.radius <= 0) {
+                ball.x = ball.radius;
+                ball.vx = Math.abs(ball.vx);
+            }
+
+            // Bounce off the top and bottom walls.
+            if (ball.y + ball.radius >= canvas.height) {
+                ball.y = canvas.height - ball.radius;
+                ball.vy = -Math.abs(ball.vy);
+            }
+
+            if (ball.y - ball.radius <= 0) {
+                ball.y = ball.radius;
+                ball.vy = Math.abs(ball.vy);
+            }
+        }
+
+        function drawScene() {
+            drawBackground();
+            drawParticles();
+            drawBall();
+        }
+
+        function animate(timestamp) {
+            if (lastTime === 0) {
+                lastTime = timestamp;
+            }
+
+            // Cap elapsed time so switching tabs doesn't cause big jumps.
+            const dt = Math.min(
+                (timestamp - lastTime) / 1000,
+                0.05
+            );
+
+            lastTime = timestamp;
+
+            if (isRunning) {
+                updateBall(dt);
+                updateParticles(dt);
+            }
+
+            drawScene();
+
+            requestAnimationFrame(animate);
+        }
+
+        canvas.addEventListener("click", function (event) {
+            if (!isRunning) {
+                return;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+
+            // Convert displayed coordinates to canvas coordinates.
+            const mouseX =
+                (event.clientX - rect.left) *
+                (canvas.width / rect.width);
+
+            const mouseY =
+                (event.clientY - rect.top) *
+                (canvas.height / rect.height);
+
+            const distance = Math.hypot(
+                mouseX - ball.x,
+                mouseY - ball.y
+            );
+
+            // Only respond when the user clicks the ball.
+            if (distance <= ball.radius) {
+                createExplosion();
+
+                colorIndex = (colorIndex + 1) % colors.length;
+                successfulClicks++;
+
+                // Send the ball in a new diagonal direction.
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 260;
+
+                ball.vx = Math.cos(angle) * speed;
+                ball.vy = Math.sin(angle) * speed;
+
+                updateStatus();
+
+                message.textContent =
+                    "Boom! You hit the ball! Color changed to " +
+                    colors[colorIndex].name + ".";
+            }
+        });
+
+        pauseButton.addEventListener("click", function () {
+            isRunning = !isRunning;
+
+            pauseButton.textContent = isRunning
+                ? "Pause Animation"
+                : "Start Animation";
+
+            message.textContent = isRunning
+                ? "Animation resumed!"
+                : "Animation paused.";
+        });
+
+        resetButton.addEventListener("click", function () {
+            ball.x = 100;
+            ball.y = 100;
+            ball.vx = 220;
+            ball.vy = 170;
+
+            colorIndex = 0;
+            successfulClicks = 0;
+            particles = [];
+
+            isRunning = true;
+            lastTime = 0;
+
+            pauseButton.textContent = "Pause Animation";
+
+            message.textContent =
+                "Animation reset! Try clicking the moving ball.";
+
+            updateStatus();
+            drawScene();
+        });
+
+        updateStatus();
+        drawScene();
+        requestAnimationFrame(animate);
+    </script>
+
+</body>
+</html>
