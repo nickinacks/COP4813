@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="COP4813 Assignment 10 mobile-friendly website and Google Lighthouse audit results.">
+
+    <meta name="author" content="Nicholas Laskoski">
+
+    <title>Assignment 10 | Mobile Website Audit</title>
+
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        .report-intro {
+            background: #eaf4ff;
+            border-left: 5px solid #1f5f99;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(145px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .score-card {
+            background: #f3fbf6;
+            border: 2px solid #16834b;
+            border-radius: 12px;
+            padding: 20px 10px;
+            text-align: center;
+        }
+
+        .score-number {
+            color: #16834b;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .score-label {
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .report-image {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            margin: 20px auto;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+        }
+
+        .image-caption {
+            text-align: center;
+            color: #555555;
+            font-size: 0.9rem;
+        }
+
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .metrics-table th,
+        .metrics-table td {
+            padding: 12px;
+            border: 1px solid #cccccc;
+            text-align: left;
+        }
+
+        .metrics-table th {
+            background: #1f5f99;
+            color: white;
+        }
+
+        .metrics-table tr:nth-child(even) {
+            background: #f2f7fb;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .audit-section {
+            border-top: 2px solid #e0e8f0;
+            padding-top: 20px;
+            margin-top: 30px;
+        }
+
+        .success-text {
+            color: #13783d;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .report-intro {
+                padding: 15px;
+            }
+
+            .score-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .score-card {
+                padding: 15px 5px;
+            }
+
+            .score-number {
+                font-size: 2rem;
+            }
+
+            .metrics-table th,
+            .metrics-table td {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Assignment 10</h1>
+        <p>Mobile-Friendly Website and Lighthouse Audit</p>
+    </header>
+
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About Me</a></li>
+            <li><a href="../assignments.html">My Assignments</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section>
+            <h2>Project Overview</h2>
+
+            <div class="report-intro">
+                <p>
+                    The objective of Assignment 10 was to
+                    create a mobile-friendly version of my
+                    COP4813 homepage and evaluate its
+                    performance, accessibility, best practices,
+                    and search engine optimization.
+                </p>
+
+                <p>
+                    I used responsive CSS media queries,
+                    flexible layouts, scalable images, and
+                    touch-friendly navigation to ensure
+                    the homepage works on both mobile
+                    devices and desktop computers.
+                </p>
+            </div>
+
+            <p>
+                <strong>Website Tested:</strong>
+                <a href="https://nickinacks.github.io/COP4813/">
+                    COP4813 Portfolio Homepage
+                </a>
+            </p>
+
+            <p>
+                <strong>Testing Tool:</strong>
+                Google Chrome Lighthouse
+            </p>
+
+            <p>
+                <strong>Audit Mode:</strong>
+                Navigation
+            </p>
+
+            <p>
+                <strong>Device Configuration:</strong>
+                Mobile
+            </p>
+        </section>
+
+        <section>
+            <h2>Lighthouse Audit Overview</h2>
+
+            <p>
+                I tested my published homepage using Google
+                Lighthouse in Chrome Developer Tools.
+                The website received a score of 100 in
+                all four measured categories.
+            </p>
+
+            <div class="score-grid">
+
+                <div class="score-card">
+                    <p class="score-number">100</p>
+                    <p class="score-label">Performance</p>
+                </div>
+
+                <div class="score-card">
+                    <p class="score-number">100</p>
+                    <p class="score-label">Accessibility</p>
+                </div>
+
+                <div class="score-card">
+                    <p class="score-number">100</p>
+                    <p class="score-label">Best Practices</p>
+                </div>
+
+                <div class="score-card">
+                    <p class="score-number">100</p>
+                    <p class="score-label">SEO</p>
+                </div>
+
+            </div>
+
+            <img
+                class="report-image"
+                src="images/lighthouse-overview.png"
+                alt="Google Lighthouse mobile audit showing scores of 100 for Performance, Accessibility, Best Practices, and SEO."
+                loading="lazy"
+            >
+
+            <p class="image-caption">
+                Figure 1: Overall Google Lighthouse mobile audit results.
+            </p>
+        </section>
+
+        <section>
+            <h2>Performance Analysis</h2>
+
+            <p>
+                The homepage received a Performance score
+                of 100. Lighthouse reported fast content
+                rendering, low blocking time, and minimal
+                layout movement.
+            </p>
+
+            <div class="table-wrapper">
+                <table class="metrics-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Performance Metric</th>
+                            <th scope="col">Result</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>First Contentful Paint</td>
+                            <td>1.1 seconds</td>
+                        </tr>
+
+                        <tr>
+                            <td>Largest Contentful Paint</td>
+                            <td>1.1 seconds</td>
+                        </tr>
+
+                        <tr>
+                            <td>Total Blocking Time</td>
+                            <td>60 milliseconds</td>
+                        </tr>
+
+                        <tr>
+                            <td>Cumulative Layout Shift</td>
+                            <td>0.001</td>
+                        </tr>
+
+                        <tr>
+                            <td>Speed Index</td>
+                            <td>1.1 seconds</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <img
+                class="report-image"
+                src="images/lighthouse-performance.png"
+                alt="Lighthouse performance metrics including First Contentful Paint of 1.1 seconds and Total Blocking Time of 60 milliseconds."
+                loading="lazy"
+            >
+
+            <p class="image-caption">
+                Figure 2: Detailed performance measurements.
+            </p>
+
+            <p>
+                <strong>Analysis:</strong>
+                These results suggest that the homepage
+                loads quickly and remains visually stable.
+                The low Total Blocking Time indicates
+                that the browser experienced little delay
+                from blocking JavaScript tasks during
+                this test.
+            </p>
+        </section>
+
+        <section>
+            <h2>Accessibility Analysis</h2>
+
+            <p class="success-text">
+                Lighthouse Accessibility Score: 100/100
+            </p>
+
+            <p>
+                The accessibility audit evaluates automated
+                checks related to how people with different
+                abilities can interact with a website.
+            </p>
+
+            <p>
+                My homepage uses descriptive image text,
+                semantic HTML elements, visible navigation,
+                readable content, and keyboard focus styling.
+            </p>
+
+            <img
+                class="report-image"
+                src="images/lighthouse-accessibility.png"
+                alt="Lighthouse Accessibility audit showing a score of 100 and additional items recommended for manual review."
+                loading="lazy"
+            >
+
+            <p class="image-caption">
+                Figure 3: Accessibility audit results and manual checks.
+            </p>
+
+            <p>
+                <strong>Analysis:</strong>
+                The homepage received a perfect score
+                on the automated accessibility checks.
+                However, Lighthouse also recommends
+                manual testing of keyboard navigation,
+                logical tab order, focus behavior, and
+                screen-reader compatibility.
+            </p>
+
+            <p>
+                A score of 100 does not guarantee that
+                every accessibility requirement has
+                been met, so manual testing remains
+                an important future step.
+            </p>
+        </section>
+
+        <section>
+            <h2>Best Practices Analysis</h2>
+
+            <p class="success-text">
+                Lighthouse Best Practices Score: 100/100
+            </p>
+
+            <p>
+                The Best Practices audit evaluates
+                selected technical and security-related
+                aspects of the webpage.
+            </p>
+
+            <img
+                class="report-image"
+                src="images/lighthouse-best-practices.png"
+                alt="Lighthouse Best Practices score of 100 with additional security-related checks for manual review."
+                loading="lazy"
+            >
+
+            <p class="image-caption">
+                Figure 4: Best Practices audit and security checks.
+            </p>
+
+            <p>
+                <strong>Analysis:</strong>
+                The homepage passed the scored Best
+                Practices checks in this Lighthouse run.
+                The report also identified security
+                topics worth reviewing, including
+                Content Security Policy, HTTP Strict
+                Transport Security, clickjacking
+                protection, and cross-origin isolation.
+            </p>
+
+            <p>
+                These additional checks do not
+                necessarily indicate a failed audit.
+                They provide opportunities for further
+                security evaluation.
+            </p>
+        </section>
+
+        <section>
+            <h2>SEO Analysis</h2>
+
+            <p class="success-text">
+                Lighthouse SEO Score: 100/100
+            </p>
+
+            <p>
+                Search Engine Optimization helps
+                search engines understand and index
+                website content.
+            </p>
+
+            <p>
+                My homepage includes a descriptive
+                page title, a meta description,
+                readable content, and navigation
+                links to the rest of my portfolio.
+            </p>
+
+            <img
+                class="report-image"
+                src="images/lighthouse-seo.png"
+                alt="Google Lighthouse SEO audit showing a score of 100 and an additional structured data validation check."
+                loading="lazy"
+            >
+
+            <p class="image-caption">
+                Figure 5: Search Engine Optimization audit results.
+            </p>
+
+            <p>
+                <strong>Analysis:</strong>
+                The website passed the scored SEO
+                checks. Lighthouse also recommends
+                reviewing structured data validity
+                where applicable. Search rankings
+                depend on additional factors that
+                Lighthouse does not measure.
+            </p>
+        </section>
+
+        <section>
+            <h2>Mobile-Friendly Design Improvements</h2>
+
+            <p>
+                To improve the mobile experience,
+                I made several changes to my
+                existing CSS stylesheet:
+            </p>
+
+            <ul>
+                <li>
+                    Added responsive breakpoints
+                    for tablets and smartphones.
+                </li>
+
+                <li>
+                    Changed the navigation menu
+                    to a vertical layout on
+                    smaller screens.
+                </li>
+
+                <li>
+                    Increased navigation link
+                    sizes for touchscreen use.
+                </li>
+
+                <li>
+                    Made images resize to fit
+                    different screen widths.
+                </li>
+
+                <li>
+                    Adjusted spacing and padding
+                    for smaller displays.
+                </li>
+
+                <li>
+                    Improved keyboard focus
+                    indicators for accessibility.
+                </li>
+
+                <li>
+                    Preserved the same menu options
+                    and homepage features on
+                    desktop and mobile devices.
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Conclusion</h2>
+
+            <p>
+                Assignment 10 helped me understand
+                the importance of responsive design
+                and testing websites with modern
+                browser development tools.
+            </p>
+
+            <p>
+                By updating the CSS and testing the
+                published homepage using Google
+                Lighthouse, I was able to evaluate
+                how well the website performs on
+                mobile devices.
+            </p>
+
+            <p>
+                The homepage achieved scores of
+                100 in Performance, Accessibility,
+                Best Practices, and SEO during
+                the mobile Lighthouse audit.
+                Although the results were excellent,
+                additional manual accessibility
+                and security testing could help
+                identify issues not covered by
+                automated scoring.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Created by Nicholas Laskoski</p>
+        <p>COP4813 Web Programming</p>
+    </footer>
+
+</body>
+</html>
