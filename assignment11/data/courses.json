@@ -1,0 +1,172 @@
+
+{
+  "program": {
+    "name": "Bachelor of Science in Information Technology",
+    "school": "Daytona State College",
+    "description": "Interactive BSIT course advising demonstration",
+    "disclaimer": "This is a simplified academic project. Verify official course requirements and offerings with the college catalog and an academic advisor."
+  },
+  "courses": [
+    {
+      "id": "COP1000",
+      "name": "Principles of Computer Programming",
+      "credits": 3,
+      "category": "Programming",
+      "prerequisites": null,
+      "exclusiveGroup": null,
+      "note": "An introductory programming course."
+    },
+    {
+      "id": "COP2800",
+      "name": "Computer Programming Java",
+      "credits": 3,
+      "category": "Programming",
+      "prerequisites": null,
+      "exclusiveGroup": "programming-choice",
+      "note": "Select one programming pathway. For this demonstration, COP2800, COP2220, and COP2360 are treated as alternatives."
+    },
+    {
+      "id": "COP2220",
+      "name": "Computer Programming C",
+      "credits": 3,
+      "category": "Programming",
+      "prerequisites": null,
+      "exclusiveGroup": "programming-choice",
+      "note": "An alternative programming pathway. Selecting this course disables the other courses in this demonstration's programming-choice group."
+    },
+    {
+      "id": "COP2360",
+      "name": "C# Computer Programming",
+      "credits": 3,
+      "category": "Programming",
+      "prerequisites": null,
+      "exclusiveGroup": "programming-choice",
+      "note": "An alternative programming pathway. Only one course from this demonstration's programming-choice group is required."
+    },
+    {
+      "id": "COT3100",
+      "name": "Discrete Analysis",
+      "credits": 3,
+      "category": "Mathematics",
+      "prerequisites": null,
+      "exclusiveGroup": "discrete-choice",
+      "note": "Discrete Analysis is one pathway used in the advising example."
+    },
+    {
+      "id": "MAD2104",
+      "name": "Discrete Mathematics",
+      "credits": 3,
+      "category": "Mathematics",
+      "prerequisites": null,
+      "exclusiveGroup": "discrete-choice",
+      "note": "Alternative to COT3100 for the requirements modeled in this demonstration."
+    },
+    {
+      "id": "STA2023",
+      "name": "Elementary Statistics",
+      "credits": 3,
+      "category": "Mathematics",
+      "prerequisites": null,
+      "exclusiveGroup": null,
+      "note": "Statistics course included in the BSIT planning example."
+    },
+    {
+      "id": "CTS3348",
+      "name": "Linux Administration",
+      "credits": 3,
+      "category": "Systems",
+      "prerequisites": null,
+      "exclusiveGroup": null,
+      "note": "Introduces Linux system administration concepts."
+    },
+    {
+      "id": "COP4708",
+      "name": "Applied Database I",
+      "credits": 3,
+      "category": "Database",
+      "prerequisites": {
+        "anyOf": ["COP2800", "COP2220", "COP2360"]
+      },
+      "exclusiveGroup": null,
+      "note": "Complete one of the listed programming courses before taking this course."
+    },
+    {
+      "id": "COP4813",
+      "name": "Web Systems I",
+      "credits": 3,
+      "category": "Web Development",
+      "prerequisites": {
+        "allOf": [
+          {
+            "anyOf": ["COP2800", "COP2220", "COP2360"]
+          },
+          {
+            "anyOf": ["COT3100", "MAD2104"]
+          }
+        ]
+      },
+      "exclusiveGroup": null,
+      "note": "This example demonstrates AND/OR logic: complete one programming course AND one discrete mathematics course."
+    },
+    {
+      "id": "COP4709",
+      "name": "Applied Database II",
+      "credits": 3,
+      "category": "Database",
+      "prerequisites": {
+        "allOf": ["COP4708"]
+      },
+      "exclusiveGroup": null,
+      "note": "Complete Applied Database I before taking Applied Database II."
+    },
+    {
+      "id": "COP4834",
+      "name": "Web Systems II",
+      "credits": 3,
+      "category": "Web Development",
+      "prerequisites": {
+        "allOf": ["COP4813"]
+      },
+      "exclusiveGroup": null,
+      "note": "This demonstration uses Web Systems I as a prerequisite for Web Systems II."
+    },
+    {
+      "id": "CEN3722",
+      "name": "Human Computer Interfaces",
+      "credits": 3,
+      "category": "Web Development",
+      "prerequisites": {
+        "anyOf": ["COP2800", "COP2220", "COP2360"]
+      },
+      "exclusiveGroup": null,
+      "note": "Complete one programming course before selecting this course in the demonstration."
+    },
+    {
+      "id": "CIS4510",
+      "name": "IT Project Management",
+      "credits": 3,
+      "category": "Management",
+      "prerequisites": null,
+      "exclusiveGroup": null,
+      "note": "Introduces information technology project management."
+    },
+    {
+      "id": "CET4860",
+      "name": "Introduction to Digital Forensics",
+      "credits": 3,
+      "category": "Cybersecurity",
+      "prerequisites": null,
+      "exclusiveGroup": null,
+      "note": "Introduces digital forensic investigation techniques."
+    },
+    {
+      "id": "CET4862",
+      "name": "Network Forensics and Incident Response",
+      "credits": 3,
+      "category": "Cybersecurity",
+      "prerequisites": null,
+      "exclusiveGroup": null,
+      "note": "Explores network evidence and incident response."
+    }
+  ]
+}

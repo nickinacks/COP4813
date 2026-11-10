@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Interactive BSIT Course Advisor for COP4813 Assignment 11.">
+
+    <title>Assignment 11 | BSIT Course Advisor</title>
+
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>BSIT Course Advisor</h1>
+        <p>Assignment 11 – Dynamic Objects</p>
+    </header>
+
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">About Me</a></li>
+            <li><a href="../assignments.html">My Assignments</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section class="advisor-intro">
+            <h2>Welcome to Your Course Advisor</h2>
+
+            <p>
+                This interactive advising tool helps students
+                explore courses in a sample Bachelor of Science
+                in Information Technology program.
+            </p>
+
+            <p>
+                Mark the courses you have already completed.
+                The advisor will automatically determine which
+                courses you are eligible to take next based
+                on the prerequisites stored in the JSON database.
+            </p>
+
+            <p>
+                You can also add eligible courses to your
+                semester plan using the Add button or
+                drag-and-drop functionality.
+            </p>
+
+            <p class="disclaimer">
+                Educational demonstration only. This advisor
+                uses simplified course requirements and does
+                not replace the official Daytona State College
+                catalog or academic advising.
+            </p>
+        </section>
+
+        <section>
+            <h2>Your Academic Progress</h2>
+
+            <div class="dashboard">
+
+                <div class="stat-card">
+                    <span id="completed-count">0</span>
+                    <p>Completed Courses</p>
+                </div>
+
+                <div class="stat-card">
+                    <span id="available-count">0</span>
+                    <p>Available Courses</p>
+                </div>
+
+                <div class="stat-card">
+                    <span id="planned-count">0</span>
+                    <p>Planned Courses</p>
+                </div>
+
+                <div class="stat-card">
+                    <span id="planned-credits">0</span>
+                    <p>Planned Credits</p>
+                </div>
+
+            </div>
+
+            <div class="advisor-actions">
+                <button id="reset-button" type="button">
+                    Reset Advisor
+                </button>
+            </div>
+        </section>
+
+        <section>
+            <h2>1. Courses You Have Completed</h2>
+
+            <p>
+                Select the checkbox next to each course you
+                have already passed. Your available courses
+                will update automatically.
+            </p>
+
+            <div id="course-checklist" class="course-checklist">
+                <p>Loading course data...</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Courses You Can Take</h2>
+
+            <p>
+                These courses are available based on your
+                completed classes and prerequisite requirements.
+            </p>
+
+            <div id="available-courses" class="course-grid">
+                <p>Loading available courses...</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. Courses Not Yet Available</h2>
+
+            <p>
+                These courses require additional prerequisites
+                or are unavailable because an alternative
+                course has already been selected.
+            </p>
+
+            <div id="locked-courses" class="course-grid">
+                <p>Loading course requirements...</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Build Your Semester Plan</h2>
+
+            <p>
+                Add eligible courses to your semester plan.
+                You can drag available course cards into the
+                planner or use their Add to Plan buttons.
+            </p>
+
+            <div id="semester-plan"
+                 class="semester-plan"
+                 aria-label="Semester course plan">
+
+                <p id="empty-plan-message">
+                    Your semester plan is empty.
+                    Add a course to get started.
+                </p>
+
+                <div id="planned-courses"></div>
+
+            </div>
+
+            <p class="credit-summary">
+                Total Planned Credits:
+                <strong id="credit-total">0</strong>
+            </p>
+        </section>
+
+        <section>
+            <h2>How This Advisor Works</h2>
+
+            <p>
+                Course information is stored in an external
+                JSON file. JavaScript loads the data and
+                dynamically creates the course cards,
+                checkboxes, descriptions, and planning controls.
+            </p>
+
+            <p>
+                The advisor supports AND prerequisites,
+                OR prerequisites, and mutually exclusive
+                course alternatives.
+            </p>
+
+            <p>
+                User interactions trigger JavaScript events
+                that update course eligibility and
+                the semester plan without reloading the page.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Created by Nicholas Laskoski</p>
+        <p>COP4813 Web Programming – Assignment 11</p>
+    </footer>
+
+</body>
+</html>
